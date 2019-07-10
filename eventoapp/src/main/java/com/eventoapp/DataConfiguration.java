@@ -9,7 +9,7 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
-//classe de configuração do banco de dados
+
 @Configuration
 public class DataConfiguration {
 
@@ -25,12 +25,12 @@ public class DataConfiguration {
 	
 	@Bean
 	public JpaVendorAdapter jpaVendorAdapter() {
-		HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter(); //cria conecçao com o hibernet
-		adapter.setDatabase(Database.MYSQL); //informa qual database que estamos utilizando
-		adapter.setShowSql(true); // informa em todas as etapas de inserir ou deleter aparece os passo a passo no console
-		adapter.setGenerateDdl(true); //permite que o hibernet crie as tabelas automaticamente
-		adapter.setDatabasePlatform("org.hibernate.dialect.MySQLDialect"); //informa o dialeto que vai ser utilizado
-		adapter.setPrepareConnection(true); // para o hibernete se conectar
+		HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter(); 
+		adapter.setDatabase(Database.MYSQL); 
+		adapter.setShowSql(true); 
+		adapter.setGenerateDdl(true); 
+		adapter.setDatabasePlatform("org.hibernate.dialect.MySQLDialect"); 
+		adapter.setPrepareConnection(true); 
 		return adapter;
 	}
 }
