@@ -5,7 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 
-@Entity // anota para iformar que deve criar uma tabela
+@Entity 
 public class Convidado {
 
 	@Id
@@ -15,7 +15,7 @@ public class Convidado {
 	@NotEmpty
 	private String nomeConvidado;
 	
-	@ManyToOne //anotação para fazer relaçao com a tabela de evendo, significa muitos convidados para um evento
+	@ManyToOne 
 	private Evento evento;
 	
 	public Evento getEvento() {
