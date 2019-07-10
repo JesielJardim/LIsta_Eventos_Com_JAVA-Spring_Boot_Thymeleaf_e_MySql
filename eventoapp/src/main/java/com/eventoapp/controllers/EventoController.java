@@ -19,53 +19,51 @@ import com.eventoapp.repository.EventoRepository;
 @Controller
 public class EventoController {
 
-	@Autowired //anotação que faz a injeção de dependencia (cria uma nova instancia automatico quando vamos utilizar)
+	@Autowired 
 	private EventoRepository er;
 	
 	@Autowired
 	private ConvidadoRepository cr;
 	
 	@RequestMapping(value="/cadastrarEvento", method=RequestMethod.GET)
-	public String form() { //retrna um formulario de cadastro
-		return "evento/formEvento"; //informando o local da pagina
+	public String form() { 
+		return "evento/formEvento"; 
 	}
 	
 	@RequestMapping(value="/cadastrarEvento", method=RequestMethod.POST)
-	public String form(@Valid Evento evento, BindingResult result, RedirectAttributes attributes) { //recebe um evento
+	public String form(@Valid Evento evento, BindingResult result, RedirectAttributes attributes) { 
 		if(result.hasErrors()) {
 			attributes.addFlashAttribute("mensagem", "Verifique os campos!");
 			return "redirect:/cadastrarEvento"; 
 		}
-		er.save(evento); //persistir no banco de dados (ja salva no banco).
+		er.save(evento); 
 		attributes.addFlashAttribute("mensagem", "Evento cadastrado com sucesso!");
 		return "redirect:/cadastrarEvento"; 
 	}
 	
-	//metodo ara retornar a lista de eventos(itens)
+	
 	@RequestMapping("/eventos")
 	public ModelAndView listaEventos() {
-		ModelAndView mv = new ModelAndView("index"); // passa a pagina que deve ser inderizado os itens
-		//buscando os dados no banco
+		ModelAndView mv = new ModelAndView("index"); 
 		Iterable<Evento> eventos = er.findAll();
-		//passando os dados para view
-		mv.addObject("eventos", eventos);//o 1 paramentro colocar o mesmo nome que colocou na view na pagina index "${eventos}", o segundo e a lista
+		mv.addObject("eventos", eventos);
 		return mv;
 	}
 	
 	@RequestMapping(value="/{codigo}", method=RequestMethod.GET)
 	public ModelAndView detalhesEvento(@PathVariable("codigo") long codigo) {
-		Evento evento = er.findByCodigo(codigo); //esta pesquisando por codigo no banco
+		Evento evento = er.findByCodigo(codigo); 
 		ModelAndView mv = new ModelAndView("evento/detalhesEvento");
 		mv.addObject("eventos", evento);
 		
-		Iterable<Convidado> convidados = cr.findByEvento(evento); //busca uma lista de convidados
+		Iterable<Convidado> convidados = cr.findByEvento(evento); 
 		mv.addObject("convidados", convidados);
 		
 		return mv;
 	}
 	
 	@RequestMapping("/deletarEvento")
-	public String deletarEvento(long codigo) { //deletar um item
+	public String deletarEvento(long codigo) { 
 		Evento evento = er.findByCodigo(codigo);
 		er.delete(evento);
 		return "redirect:/eventos";
@@ -78,8 +76,8 @@ public class EventoController {
 			attributes.addFlashAttribute("mensagem", "Verifique os campos!");
 			return "redirect:/{codigo}";
 		}
-		Evento evento = er.findByCodigo(codigo); //faz a busca do codigo que esta sendo passado
-		convidado.setEvento(evento); //passa o codigo encontrato para salvar junto com o convidado
+		Evento evento = er.findByCodigo(codigo); 
+		convidado.setEvento(evento); 
 		cr.save(convidado);
 		attributes.addFlashAttribute("mensagem", "Convidado adicionado com sucesso!");
 		return "redirect:/{codigo}";
@@ -90,23 +88,10 @@ public class EventoController {
 		Convidado convidado = cr.findByRg(rg);
 		cr.delete(convidado);
 		
-		Evento evento = convidado.getEvento(); //após deletar um convidado pega novamente a lista de evento atualizada para retornar
+		Evento evento = convidado.getEvento(); 
 		long codigoLong = evento.getCodigo();
-		String codigo = "" + codigoLong; //converte o codigo que é long
-		return "redirect:/" + codigo; //ai rretorna
+		String codigo = "" + codigoLong; 
+		return "redirect:/" + codigo; 
 	}
 	
-	/*@RequestMapping("/cadastraEvento")
-	public String form() { //retrna um formulario de cadastro
-		return "evento/formEvento"; //informando o local da pagina
-		
-		
-			@RequestMapping("/{codigo}")
-	public ModelAndView detalhesEvento(@PathVariable("codigo") long codigo) {
-		Evento evento = er.findByCodigo(codigo); //esta pesquisando por codigo no banco
-		ModelAndView mv = new ModelAndView("evento/detalhesEvento");
-		mv.addObject("eventos", evento);
-		return mv;
-	}
-	}*/
 }
