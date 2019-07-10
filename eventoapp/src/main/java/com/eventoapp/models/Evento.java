@@ -17,7 +17,7 @@ public class Evento implements Serializable{
 	
 	//id da entidade
 	@Id
-	@GeneratedValue(strategy= GenerationType.AUTO) //vai gerar um codigo automaticamente
+	@GeneratedValue(strategy= GenerationType.AUTO) 
 	private long codigo;
 
 	@NotEmpty
@@ -32,7 +32,7 @@ public class Evento implements Serializable{
 	@NotEmpty
 	private String horario;
 	
-	@OneToMany // faz relação com a tabela de convidados, significa um evento pode ter varios convidados
+	@OneToMany 
 	private List<Convidado> convidados;
 	
 		
